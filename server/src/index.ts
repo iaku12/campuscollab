@@ -1,3 +1,6 @@
+import session from 'express-session'
+import connectPgSimple from 'connect-pg-simple'
+import { authRouter } from './auth'
 import 'dotenv/config'
 import express, { type NextFunction, type Request, type Response } from 'express'
 import cors from 'cors'
@@ -6,6 +9,28 @@ import { pool } from './db'
 const app = express()
 app.use(cors())
 app.use(express.json())
+if (!process.env.SESSION_SECRET) {
+  throw new Error('SESSION_SECRET is missing from server/.env')
+}
+
+const PgSession = connectPgSimple(session)
+
+app.use(
+  session({
+    store: new PgSession({ pool, createTableIfMissing: true }),
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+    },
+  })
+)
+
+app.use('/api/auth', authRouter)
 
 const CAMPAIGN_COLUMNS = `id, title, description, to_char(deadline, 'YYYY-MM-DD') AS deadline, status`
 
