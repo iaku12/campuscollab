@@ -1,3 +1,4 @@
+import { participationsRouter } from './participations'
 import { requireRole } from './middleware'
 import session from 'express-session'
 import connectPgSimple from 'connect-pg-simple'
@@ -32,6 +33,7 @@ app.use(
 )
 
 app.use('/api/auth', authRouter)
+app.use('/api', participationsRouter)
 
 const CAMPAIGN_COLUMNS = `id, title, description, to_char(deadline, 'YYYY-MM-DD') AS deadline, status`
 
