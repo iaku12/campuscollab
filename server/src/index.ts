@@ -1,3 +1,4 @@
+import { requireRole } from './middleware'
 import session from 'express-session'
 import connectPgSimple from 'connect-pg-simple'
 import { authRouter } from './auth'
@@ -45,7 +46,7 @@ app.get('/api/campaigns', async (_req, res, next) => {
   }
 })
 
-app.post('/api/campaigns', async (req, res, next) => {
+   app.post('/api/campaigns', requireRole('coordinator'), async (req, res, next) => {
   try {
     const { title, description, deadline } = req.body ?? {}
 
@@ -62,12 +63,12 @@ app.post('/api/campaigns', async (req, res, next) => {
       return
     }
 
-    const result = await pool.query(
-      `INSERT INTO campaigns (title, description, deadline)
-       VALUES ($1, $2, $3)
-       RETURNING ${CAMPAIGN_COLUMNS}`,
-      [title.trim(), description.trim(), deadline || null]
-    )
+       const result = await pool.query(
+     `INSERT INTO campaigns (title, description, deadline, created_by)
+      VALUES ($1, $2, $3, $4)
+      RETURNING ${CAMPAIGN_COLUMNS}`,
+     [title.trim(), description.trim(), deadline || null, req.session.userId]
+   )
     res.status(201).json(result.rows[0])
   } catch (err) {
     next(err)
