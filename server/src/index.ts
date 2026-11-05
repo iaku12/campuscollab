@@ -35,8 +35,7 @@ app.use(
 app.use('/api/auth', authRouter)
 app.use('/api', participationsRouter)
 
-const CAMPAIGN_COLUMNS = `id, title, description, to_char(deadline, 'YYYY-MM-DD') AS deadline, status`
-
+const CAMPAIGN_COLUMNS = `id, title, description, to_char(deadline, 'YYYY-MM-DD') AS deadline, status, created_by`
 app.get('/api/campaigns', async (_req, res, next) => {
   try {
     const result = await pool.query(

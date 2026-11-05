@@ -209,4 +209,85 @@ button:disabled {
     flex-direction: column;
     align-items: flex-start;
   }
+  .create-form select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  font: inherit;
+  color: var(--text);
+  background: var(--field);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.userbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  color: var(--muted);
+}
+
+.error {
+  color: var(--bad);
+  margin: 4px 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status.pending {
+  color: #fbbf24;
+  background: rgb(251 191 36 / 0.12);
+}
+
+.status.approved {
+  color: var(--good);
+  background: rgb(52 211 153 / 0.12);
+}
+
+.status.rejected {
+  color: var(--bad);
+  background: rgb(248 113 113 / 0.12);
+}
+.applicants {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.applicant-list {
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.applicant-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 12px;
+  background: var(--field);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.applicant-email {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
 }
