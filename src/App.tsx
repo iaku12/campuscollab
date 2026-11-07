@@ -1,3 +1,4 @@
+import Dashboard from './Dashboard'
 import Submissions from './Submissions'
 import SubmissionBox, { type Submission } from './SubmissionBox'
 import Applicants from './Applicants'
@@ -191,6 +192,7 @@ function App() {
           </form>
         </>
       )}
+         {user?.role === 'coordinator' && <Dashboard />}
 
       <h2>Available campaigns</h2>
       {error && <p role="alert" className="error">{error}</p>}
