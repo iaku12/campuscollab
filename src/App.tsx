@@ -1,3 +1,5 @@
+import Submissions from './Submissions'
+import SubmissionBox, { type Submission } from './SubmissionBox'
 import Applicants from './Applicants'
 import { useEffect, useState, type SubmitEvent } from 'react'
 import './App.css'
@@ -23,6 +25,7 @@ function App() {
   const [error, setError] = useState('')
   const [showOpenOnly, setShowOpenOnly] = useState(false)
   const [myApplications, setMyApplications] = useState<Record<number, string>>({})
+  const [mySubmissions, setMySubmissions] = useState<Record<number, Submission>>({})
   const [newTitle, setNewTitle] = useState('')
   const [newDescription, setNewDescription] = useState('')
   const [newDeadline, setNewDeadline] = useState('')
@@ -43,7 +46,7 @@ function App() {
       .finally(() => setLoading(false))
   }, [])
 
-  // Load this student's applications
+    // Load this student's applications
   useEffect(() => {
     if (user?.role !== 'student') {
       setMyApplications({})
@@ -54,6 +57,19 @@ function App() {
         setMyApplications(Object.fromEntries(rows.map((r) => [r.campaign_id, r.status])))
       )
       .catch(() => setMyApplications({}))
+  }, [user])
+
+  // Load this student's submissions
+  useEffect(() => {
+    if (user?.role !== 'student') {
+      setMySubmissions({})
+      return
+    }
+    api<Submission[]>('/api/me/submissions')
+      .then((rows) =>
+        setMySubmissions(Object.fromEntries(rows.map((r) => [r.campaign_id, r])))
+      )
+      .catch(() => setMySubmissions({}))
   }, [user])
 
   const visibleCampaigns = campaigns.filter(
@@ -218,9 +234,22 @@ function App() {
                   </button>
                 ))}
             </div>
-               {user?.role === 'coordinator' && campaign.created_by === user.id && (
-     <Applicants campaignId={campaign.id} />
-   )}
+                           {user?.role === 'coordinator' && campaign.created_by === user.id && (
+              <>
+                <Applicants campaignId={campaign.id} />
+                <Submissions campaignId={campaign.id} />
+              </>
+            )}
+
+            {user?.role === 'student' && myApplications[campaign.id] === 'Approved' && (
+              <SubmissionBox
+                campaignId={campaign.id}
+                submission={mySubmissions[campaign.id]}
+                onSaved={(saved) =>
+                  setMySubmissions((current) => ({ ...current, [campaign.id]: saved }))
+                }
+              />
+            )}
           </article>
         ))}
       </div>

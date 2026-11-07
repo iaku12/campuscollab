@@ -1,75 +1,144 @@
 :root {
   color-scheme: dark;
-  --bg: #16171d;
-  --card: #1f2028;
-  --field: #272833;
-  --border: #33353f;
-  --text: #f3f4f6;
-  --muted: #9ca3af;
-  --accent: #a78bfa;
-  --accent-hover: #b9a1fb;
-  --good: #34d399;
-  --bad: #f87171;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  --bg: #09070f;
+  --surface: #15101d;
+  --card: #1b1426;
+  --field: #100c17;
+  --border: #3b2b50;
+
+  --text: #f4eff9;
+  --muted: #b4a5c5;
+
+  --accent: #a768e8;
+  --accent-hover: #c28cff;
+  --lavender: #d1b5f3;
+  --teal: #9a79c5;
+
+  --good: #a5d6b2;
+  --bad: #e99aaf;
+  --pending: #e5c47b;
 }
 
 body {
+  isolation: isolate;
+  min-width: 320px;
+  min-height: 100vh;
   margin: 0;
-  display: block;
-  background: var(--bg);
+  background:
+    radial-gradient(ellipse at 18% 15%, rgb(103 42 171 / 30%), transparent 42%),
+    radial-gradient(ellipse at 80% 75%, rgb(66 29 111 / 20%), transparent 40%),
+    var(--bg);
   color: var(--text);
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  isolation: isolate;
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 12% 0%, rgb(61 110 75 / 18%), transparent 42%),
+    radial-gradient(ellipse at 92% 16%, rgb(89 145 140 / 12%), transparent 34%),
+    var(--bg);
+  color: var(--text);
+}
+
+body::before {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  opacity: 0.16;
+  background:
+    linear-gradient(90deg, transparent 49.8%, rgb(211 229 194 / 12%) 50%, transparent 50.2%),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 79px,
+      rgb(211 229 194 / 8%) 80px
+    );
 }
 
 #root {
+  position: relative;
+  z-index: 1;
   width: 100%;
-  max-width: none;
+  min-height: 100vh;
   margin: 0;
-  border: none;
   text-align: left;
 }
 
 .page {
-  max-width: 760px;
+  width: min(100% - 32px, 820px);
   margin: 0 auto;
-  padding: 48px 20px 80px;
+  padding: 56px 0 80px;
 }
 
 .header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 36px;
+  padding-bottom: 24px;
   text-align: center;
-  margin-bottom: 32px;
+}
+
+.header::after {
+  display: block;
+  width: 72px;
+  height: 3px;
+  margin: 22px auto 0;
+  background: linear-gradient(90deg, var(--teal), var(--accent), var(--lavender));
+  content: "";
 }
 
 .header h1 {
-  font-size: 2.75rem;
-  margin: 0 0 8px;
-  letter-spacing: -0.02em;
+  margin: 0;
+  font-size: clamp(2.5rem, 7vw, 4rem);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.045em;
 }
 
 .header p {
   margin: 0;
   color: var(--muted);
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  line-height: 1.5;
 }
 
 h2 {
-  font-size: 1.25rem;
-  margin: 0 0 16px;
+  margin: 0 0 18px;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
 }
 
-/* Create form */
+/* Campaign creation form */
 .create-form {
   display: grid;
-  gap: 8px;
-  padding: 20px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  gap: 9px;
   margin-bottom: 24px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: linear-gradient(145deg, rgb(255 255 255 / 3%), transparent 55%), var(--surface);
+  box-shadow: 0 16px 40px rgb(0 0 0 / 18%);
 }
 
-.create-form label {
-  font-size: 0.875rem;
-  color: var(--muted);
+.create-form label,
+.submission-box label {
   margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.88rem;
 }
 
 .create-form label:first-child {
@@ -77,60 +146,73 @@ h2 {
 }
 
 .create-form input,
-.create-form textarea {
+.create-form textarea,
+.create-form select,
+.submission-row input,
+.applicant-row input {
   width: 100%;
-  box-sizing: border-box;
-  padding: 10px 12px;
-  font: inherit;
-  color: var(--text);
-  background: var(--field);
+  min-width: 0;
+  padding: 11px 12px;
   border: 1px solid var(--border);
-  border-radius: 8px;
-  resize: none;
+  border-radius: 3px;
+  background: var(--field);
+  color: var(--text);
+  font: inherit;
 }
 
 .create-form textarea {
-  min-height: 84px;
+  min-height: 92px;
+  resize: vertical;
 }
 
 .create-form input:focus,
-.create-form textarea:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgb(167 139 250 / 0.25);
+.create-form textarea:focus,
+.create-form select:focus,
+.submission-row input:focus,
+.applicant-row input:focus {
+  border-color: var(--teal);
+  outline: 2px solid rgb(116 201 187 / 22%);
+  outline-offset: 1px;
 }
 
 /* Buttons */
 button {
+  padding: 10px 15px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: rgb(255 255 255 / 3%);
+  color: var(--text);
   font: inherit;
   cursor: pointer;
-  padding: 9px 16px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  color: var(--text);
-  background: transparent;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background-color 150ms ease, border-color 150ms ease, transform 150ms ease;
 }
 
 button:hover:not(:disabled) {
-  border-color: var(--accent);
+  border-color: var(--teal);
+  background: rgb(116 201 187 / 8%);
+}
+
+button:focus-visible,
+.link-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 button:disabled {
-  opacity: 0.45;
   cursor: not-allowed;
+  opacity: 0.45;
 }
 
 .btn-primary {
-  background: var(--accent);
   border-color: var(--accent);
-  color: #1a1625;
-  font-weight: 600;
+  background: var(--accent);
+  color: #172017;
+  font-weight: 700;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: var(--accent-hover);
   border-color: var(--accent-hover);
+  background: var(--accent-hover);
 }
 
 .create-form button {
@@ -138,7 +220,7 @@ button:disabled {
   margin-top: 8px;
 }
 
-/* Toolbar */
+/* Filter and campaign count */
 .toolbar {
   display: flex;
   align-items: center;
@@ -155,91 +237,120 @@ button:disabled {
 /* Campaign cards */
 .campaign-list {
   display: grid;
-  gap: 16px;
+  gap: 14px;
 }
 
 .campaign-card {
-  padding: 20px;
-  background: var(--card);
+  position: relative;
+  overflow: hidden;
+  padding: 21px;
   border: 1px solid var(--border);
-  border-radius: 12px;
-  transition: border-color 0.15s, transform 0.15s;
+  border-radius: 4px;
+  background:
+    linear-gradient(115deg, rgb(116 201 187 / 5%), transparent 48%),
+    var(--card);
+  box-shadow: 0 12px 28px rgb(0 0 0 / 14%);
+  transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.campaign-card::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(var(--teal), var(--accent), var(--lavender));
+  content: "";
+  opacity: 0.75;
 }
 
 .campaign-card:hover {
-  border-color: var(--accent);
   transform: translateY(-2px);
+  border-color: #63796a;
 }
 
 .campaign-card h3 {
-  margin: 0 0 6px;
-  font-size: 1.125rem;
+  margin: 0 0 8px;
+  font-size: 1.15rem;
+  font-weight: 620;
+  letter-spacing: -0.025em;
 }
 
 .campaign-card p {
   margin: 0 0 16px;
   color: var(--muted);
+  line-height: 1.55;
 }
 
 .campaign-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
 }
 
+/* Status labels */
 .status {
-  padding: 4px 10px;
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border: 1px solid currentColor;
   border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.025em;
 }
 
-.status.open {
+.status.open,
+.status.approved {
   color: var(--good);
-  background: rgb(52 211 153 / 0.12);
+  background: rgb(142 213 165 / 8%);
 }
 
-.status.closed {
+.status.closed,
+.status.rejected {
   color: var(--bad);
-  background: rgb(248 113 113 / 0.12);
+  background: rgb(238 147 138 / 8%);
 }
 
-@media (max-width: 520px) {
-  .toolbar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .create-form select {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 10px 12px;
-  font: inherit;
-  color: var(--text);
-  background: var(--field);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+.status.pending,
+.status.changesrequested {
+  color: var(--pending);
+  background: rgb(230 207 121 / 8%);
 }
 
-.link-button {
-  background: none;
-  border: none;
-  padding: 0;
-  color: var(--accent);
-  text-decoration: underline;
+.status.submitted {
+  color: var(--teal);
+  background: rgb(116 201 187 / 8%);
 }
 
+/* User, application, and submission details */
 .userbar {
   display: flex;
-  justify-content: flex-end;
   align-items: center;
+  justify-content: flex-end;
   gap: 12px;
   margin-bottom: 16px;
   color: var(--muted);
 }
 
+.link-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.link-button:hover:not(:disabled) {
+  border-color: transparent;
+  background: none;
+  color: var(--accent-hover);
+}
+
 .error {
-  color: var(--bad);
   margin: 4px 0;
+  color: var(--bad);
 }
 
 .actions {
@@ -248,46 +359,86 @@ button:disabled {
   gap: 8px;
 }
 
-.status.pending {
-  color: #fbbf24;
-  background: rgb(251 191 36 / 0.12);
-}
-
-.status.approved {
-  color: var(--good);
-  background: rgb(52 211 153 / 0.12);
-}
-
-.status.rejected {
-  color: var(--bad);
-  background: rgb(248 113 113 / 0.12);
-}
-.applicants {
+.applicants,
+.submission-box {
   margin-top: 16px;
   padding-top: 16px;
   border-top: 1px solid var(--border);
 }
 
 .applicant-list {
-  margin-top: 12px;
   display: grid;
   gap: 10px;
+  margin-top: 12px;
 }
 
 .applicant-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
   flex-wrap: wrap;
-  padding: 10px 12px;
-  background: var(--field);
+  gap: 12px;
+  padding: 11px 12px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 3px;
+  background: var(--field);
 }
 
 .applicant-email {
-  font-size: 0.85rem;
   color: var(--muted);
+  font-size: 0.85rem;
 }
+
+.applicant-email a {
+  color: var(--teal);
+  overflow-wrap: anywhere;
+}
+
+.submission-box label {
+  display: block;
+  margin: 0 0 7px;
+}
+
+.submission-row {
+  display: flex;
+  gap: 8px;
+}
+
+.submission-row input,
+.applicant-row input {
+  flex: 1;
+  background: var(--field);
+}
+
+.feedback {
+  color: var(--pending);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 560px) {
+  .page {
+    width: min(100% - 24px, 820px);
+    padding-top: 34px;
+  }
+
+  .create-form {
+    padding: 16px;
+  }
+
+  .toolbar,
+  .campaign-footer,
+  .submission-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .toolbar button,
+  .submission-row button {
+    width: 100%;
+  }
+
+  .userbar {
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
 }

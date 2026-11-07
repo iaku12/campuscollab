@@ -15,3 +15,6 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
   if (!response.ok) throw new Error(data?.error ?? 'Something went wrong.')
   return data as T
 }
+export function statusLabel(status: string): string {
+  return status === 'ChangesRequested' ? 'Changes requested' : status
+}
