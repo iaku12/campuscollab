@@ -1,3 +1,4 @@
+import { submissionsRouter } from './submissions'
 import { participationsRouter } from './participations'
 import { requireRole } from './middleware'
 import session from 'express-session'
@@ -34,6 +35,7 @@ app.use(
 
 app.use('/api/auth', authRouter)
 app.use('/api', participationsRouter)
+app.use('/api', submissionsRouter)
 
 const CAMPAIGN_COLUMNS = `id, title, description, to_char(deadline, 'YYYY-MM-DD') AS deadline, status, created_by`
 app.get('/api/campaigns', async (_req, res, next) => {
